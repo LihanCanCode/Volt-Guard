@@ -21,9 +21,9 @@ WINDOW_SECONDS = 2.5
 N_SAMPLES = int(SAMPLE_RATE_HZ * WINDOW_SECONDS)
 
 
-def _times_ms():
+def _times_ms(rng):
     dt_ms = 1000.0 / SAMPLE_RATE_HZ
-    jitter = np.random.normal(0, 1.5, N_SAMPLES)
+    jitter = rng.normal(0, 1.5, N_SAMPLES)
     return np.cumsum(np.full(N_SAMPLES, dt_ms) + jitter)
 
 
@@ -88,7 +88,7 @@ def generate_windows(n_per_class=100, seed=42):
         labels.append(label)
 
     for _ in range(n_per_class):
-        t = _times_ms()
+        t = _times_ms(rng)
         x, y, z = _fall(rng, t)
         add(x, y, z, t, 1)
 
@@ -103,7 +103,7 @@ def generate_windows(n_per_class=100, seed=42):
     per_adl = max(1, n_per_class // len(adl_generators))
     for _name, gen in adl_generators.items():
         for _ in range(per_adl):
-            t = _times_ms()
+            t = _times_ms(rng)
             x, y, z = gen(rng, t)
             add(x, y, z, t, 0)
 
