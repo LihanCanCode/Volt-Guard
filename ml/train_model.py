@@ -16,12 +16,19 @@ from sklearn.preprocessing import StandardScaler
 
 from features import extract_features, FEATURE_NAMES
 from generate_dataset import generate_windows
+from load_recordings import load_recordings
 
 OUTPUT_PATH = Path(__file__).parent.parent / "backend" / "model_weights.json"
 
 
 def main():
     windows, labels = generate_windows(n_per_class=400, seed=42)
+
+    real_windows, real_labels = load_recordings()
+    print(f"Real recordings included: {len(real_windows)}")
+    windows += real_windows
+    labels += real_labels
+
     X = np.array([extract_features(w) for w in windows])
     y = np.array(labels)
 

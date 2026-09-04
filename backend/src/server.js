@@ -4,6 +4,7 @@ import http from "node:http";
 import { Server } from "socket.io";
 import eventsRouter from "./routes/events.js";
 import contactsRouter from "./routes/contacts.js";
+import recordingsRouter from "./routes/recordings.js";
 import { classifyWindow } from "./inference/model.js";
 import { evaluateFallSignal } from "./inference/alertDecision.js";
 import { insertEvent, setEventOutcome } from "./db/db.js";
@@ -20,6 +21,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/events", eventsRouter);
 app.use("/api/contacts", contactsRouter);
+app.use("/api/recordings", recordingsRouter);
 app.get("/api/health", (req, res) => res.json({ ok: true }));
 
 const server = http.createServer(app);
