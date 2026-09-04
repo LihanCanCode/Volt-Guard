@@ -3,7 +3,9 @@ import cors from "cors";
 import http from "node:http";
 import { Server } from "socket.io";
 import eventsRouter from "./routes/events.js";
+import contactsRouter from "./routes/contacts.js";
 import { classifyWindow } from "./inference/model.js";
+import { evaluateFallSignal } from "./inference/alertDecision.js";
 import { insertEvent, setEventOutcome } from "./db/db.js";
 
 const PORT = process.env.PORT || 4000;
@@ -17,6 +19,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/api/events", eventsRouter);
+app.use("/api/contacts", contactsRouter);
 app.get("/api/health", (req, res) => res.json({ ok: true }));
 
 const server = http.createServer(app);
@@ -32,6 +35,7 @@ io.on("connection", (socket) => {
     lastLocation: null,
     activeEventId: null,
     cooldownUntil: 0,
+    consecutiveHits: 0,
   });
 
   socket.on("join-caregiver", () => {
@@ -64,7 +68,7 @@ io.on("connection", (socket) => {
     session.lastClassifyAt = now;
 
     const { probability, source } = classifyWindow(session.buffer);
-    if (probability >= FALL_PROBABILITY_THRESHOLD) {
+    if (evaluateFallSignal(session, probability, { threshold: FALL_PROBABILITY_THRESHOLD })) {
       const event = insertEvent({
         probability,
         lat: session.lastLocation?.lat ?? null,

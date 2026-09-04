@@ -22,6 +22,7 @@ export default function Monitor() {
   const [countdown, setCountdown] = useState(COUNTDOWN_SECONDS);
   const [confirmedAlert, setConfirmedAlert] = useState(null);
   const [error, setError] = useState(null);
+  const [primaryContact, setPrimaryContact] = useState(null);
 
   const stopCaptureRef = useRef(null);
   const latestSampleRef = useRef(null);
@@ -51,6 +52,10 @@ export default function Monitor() {
     socket.on("alert-confirmed", (payload) => {
       setConfirmedAlert(payload);
       setStatus("alerted");
+      fetch("/api/contacts")
+        .then((res) => res.json())
+        .then((contacts) => setPrimaryContact(contacts[0] ?? null))
+        .catch(() => setPrimaryContact(null));
     });
     socket.on("alert-cancelled", () => {
       setActiveEvent(null);
@@ -127,6 +132,7 @@ export default function Monitor() {
     setChartData([]);
     setActiveEvent(null);
     setConfirmedAlert(null);
+    setPrimaryContact(null);
   };
 
   if (status === "suspected" && activeEvent) {
@@ -148,7 +154,12 @@ export default function Monitor() {
     return (
       <div className="alert-overlay alert-overlay--confirmed">
         <h1>Caregiver notified</h1>
-        <p>Contact: Jordan (emergency contact)</p>
+        <p>
+          Contact:{" "}
+          {primaryContact
+            ? `${primaryContact.name}${primaryContact.relationship ? ` (${primaryContact.relationship})` : ""}`
+            : "No emergency contact configured — add one in Contacts"}
+        </p>
         {confirmedAlert && <p>Time: {new Date(confirmedAlert.timestamp).toLocaleTimeString()}</p>}
         {confirmedAlert?.lat != null && (
           <p>
