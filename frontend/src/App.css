@@ -1,0 +1,145 @@
+.nav {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.nav a {
+  padding: 8px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--text);
+  font-size: 14px;
+}
+
+.nav a.active {
+  background: var(--surface);
+  color: var(--text-h);
+  font-weight: 600;
+}
+
+.page {
+  padding: 20px 16px;
+  flex: 1;
+}
+
+.status-line {
+  margin: 8px 0 16px;
+}
+
+.error {
+  color: var(--danger);
+  margin: 8px 0;
+}
+
+.hint {
+  color: var(--text);
+  opacity: 0.7;
+  font-size: 13px;
+  margin-top: 24px;
+}
+
+.btn {
+  font-size: 16px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-h);
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: white;
+  border-color: var(--danger);
+}
+
+.btn-safe {
+  background: var(--safe);
+  color: white;
+  border-color: var(--safe);
+}
+
+.chart-wrap {
+  margin-top: 24px;
+}
+
+.alert-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px;
+  text-align: center;
+  color: white;
+}
+
+.alert-overlay--suspected {
+  background: var(--danger);
+}
+
+.alert-overlay--confirmed {
+  background: var(--safe);
+}
+
+.alert-overlay h1 {
+  color: white;
+  font-size: 32px;
+}
+
+.countdown {
+  font-size: 72px;
+  font-weight: 700;
+}
+
+.alert-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.history-table th,
+.history-table td {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.outcome-alerted {
+  color: var(--danger);
+}
+
+.outcome-cancelled {
+  color: var(--text);
+  opacity: 0.7;
+}
+
+.caregiver-alert {
+  margin-top: 16px;
+  padding: 16px;
+  border: 2px solid var(--danger);
+  border-radius: 8px;
+}
+
+.map-wrap {
+  margin-top: 12px;
+  border-radius: 8px;
+  overflow: hidden;
+}
